@@ -9,6 +9,7 @@ source bash/linking_functions.sh
 
 create_symlinks () {
     link_to_git_repo $HOME/.screenrc $REPODIR/dotfiles/screenrc
+    link_to_git_repo $HOME/.vimrc    $REPODIR/dotfiles/vimrc
 }
 
 SUCCESS_COUNTER=0
