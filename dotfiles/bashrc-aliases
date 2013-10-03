@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# cd
+alias         ..="cd ../"
+alias        ...="cd ../../"
+alias       ....="cd ../../../"
+alias      .....="cd ../../../../"
+alias     ......="cd ../../../../../"
+alias    .......="cd ../../../../../../"
+alias   ........="cd ../../../../../../../"
+alias  .........="cd ../../../../../../../../"
+alias ..........="cd ../../../../../../../../../"
+
+# grep
+alias grep="grep --color=always --exclude-dir={.svn,.git}"
+
+# less
+alias less="less -r"  # maintain control characters (for color, essentially)
+
+# ls
+alias ls="ls --color=always"
+alias list="ls -alh"
+alias lsit="list"
+
+# pep8
+alias pep8="pep8 --repeat"
+
+# other 
+alias :q="echo This isn\'t vim\!"
+

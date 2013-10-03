@@ -1,0 +1,42 @@
+#!/bin/bash
+
+# if not running interactively, don't do anything
+[[ $- != *i* ]] && return
+
+### History
+# don't put duplicate lines or lines prefixed with whitespace in history
+HISTCONTROL=ignoredups:ignorespace
+# append to history file, don't overwrite it
+shopt -s histappend
+# save a bunch of history
+HISTSIZE=2000
+HISTFILESIZE=4000
+
+# get this script's directory
+# (see http://stackoverflow.com/questions/59895/can-a-bash-script-tell-what-directory-its-stored-in)
+SOURCE="${BASH_SOURCE[0]}"
+while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
+  DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+  SOURCE="$(readlink "$SOURCE")"
+  # if $SOURCE was a relative symlink, we need to resolve it relative to the
+  # path where the symlink file was located
+  [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
+done
+CONFIGDIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+
+try_to_source () {
+  if [ -e $1 ] ; then
+    source $1
+  fi
+}
+
+try_to_source $CONFIGDIR/bashrc-aliases
+try_to_source $CONFIGDIR/bashrc-completion
+try_to_source $CONFIGDIR/bashrc-envvar
+try_to_source $CONFIGDIR/bashrc-functions
+try_to_source $CONFIGDIR/bashrc-paths
+try_to_source $CONFIGDIR/bashrc-prompt
+
+# load the local, non-versioned .bashrc
+try_to_source ~/.bashrc_local
+

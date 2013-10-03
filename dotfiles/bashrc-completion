@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# turn on completion
+complete -cf sudo
+complete -cf man
+complete -cf time
+try_to_source /usr/share/git/completion/git-completion.bash
+#try_to_source /etc/bash_completion
+
+# complete ssh host aliases
+_ssh_hosts () {
+  local cur prev opts
+  COMPREPLY=()
+  mygrep=$(whereis grep | cut -d" " -f2)
+  cur="${COMP_WORDS[COMP_CWORD]}"
+  prev="${COMP_WORDS[COMP_CWORD-1]}"
+  opts=$($mygrep 'Host ' $HOME/.ssh/config | awk '{print $2}')
+
+  COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
+  return 0
+}
+
+complete -o nospace            -F _ssh_hosts ssh sftp
+complete -o nospace -o default -F _ssh_hosts scp
+

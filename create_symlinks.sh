@@ -8,6 +8,7 @@ export HN=$(hostname)
 source bash/linking_functions.sh
 
 create_symlinks () {
+    link_to_git_repo $HOME/.bashrc   $REPODIR/dotfiles/bashrc
     link_to_git_repo $HOME/.screenrc $REPODIR/dotfiles/screenrc
     link_to_git_repo $HOME/.vimrc    $REPODIR/dotfiles/vimrc
     link_to_git_repo $HOME/.zshrc    $REPODIR/dotfiles/zshrc
