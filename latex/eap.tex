@@ -1,0 +1,14 @@
+% Commonly used LaTeX commands; include it with \input{../path/to/eap.tex}
+
+% Superscript ("EAP high-script")
+%
+\newcommand{\eaphs}[1]{\ensuremath{^{\mbox{{\scriptsize #1}}}}}
+
+% Subscript ("EAP sub-script")
+%
+\newcommand{\eapss}[1]{\ensuremath{_{\mbox{{\scriptsize #1}}}}}
+
+% dunder, in tt mode
+% example: \dunder{init} --> __init__
+%
+\newcommand{\dunder}[1]{{\tt \_\_#1\_\_}}
