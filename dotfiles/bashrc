@@ -37,6 +37,9 @@ try_to_source $CONFIGDIR/bashrc-functions
 try_to_source $CONFIGDIR/bashrc-paths
 try_to_source $CONFIGDIR/bashrc-prompt
 
+# load a private .bashrc, perhaps maintained by a private repo
+try_to_source ~/.bashrc_private
+
 # load the local, non-versioned .bashrc
 try_to_source ~/.bashrc_local
 
