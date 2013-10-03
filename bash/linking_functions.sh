@@ -65,7 +65,7 @@ link_to_git_repo () {
   result=$(safe_to_create_link $LOCALFILE)
   code=$?
 
-  if [ $result -eq 0 ] ; then
+  if [ $code -eq 0 ] ; then
     link_result=$(ln -s $REPOFILE $LOCALFILE)
     success=$?
     if [ $success -eq 0 ] ; then
@@ -74,7 +74,7 @@ link_to_git_repo () {
       echo "FAIL: Could not create link. Reason: $link_result"
     fi
   else
-    if [ $result -eq 1 ] ; then
+    if [ $code -eq 1 ] ; then
       current_link=`readlink $LOCALFILE`
       proposed_link=$REPOFILE
       if [ $current_link = $proposed_link ] ; then

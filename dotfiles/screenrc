@@ -1,0 +1,8 @@
+caption always "%{= kw}%-w%{= BW}%n %t%{-}%+w %-= @%H - %LD %d %LM - %c"
+
+startup_message off
+defscrollback 10000
+
+screen 
+screen 
+screen
