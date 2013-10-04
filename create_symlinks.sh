@@ -17,7 +17,8 @@ create_symlinks () {
     link_to_git_repo $HOME/.zshrc    $REPODIR/dotfiles/zshrc
 
     # programs/scripts
-    link_to_git_repo $HOME/bin/latex2png $REPODIR/latex/latex2png.sh
+    link_to_git_repo $HOME/bin/latex2png      $REPODIR/latex/latex2png.sh
+    link_to_git_repo $HOME/bin/convert_to_mp3 $REPODIR/bash/convert_to_mp3.sh
 }
 
 SUCCESS_COUNTER=0
