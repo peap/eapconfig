@@ -9,6 +9,7 @@ source bash/linking_functions.sh
 
 create_symlinks () {
     safe_mkdir $HOME/bin/
+    safe_mkdir $HOME/remotefs/
 
     # dotfiles
     link_to_git_repo $HOME/.bashrc   $REPODIR/dotfiles/bashrc
@@ -19,6 +20,7 @@ create_symlinks () {
     # programs/scripts
     link_to_git_repo $HOME/bin/latex2png      $REPODIR/latex/latex2png.sh
     link_to_git_repo $HOME/bin/convert_to_mp3 $REPODIR/bash/convert_to_mp3.sh
+    link_to_git_repo $HOME/bin/remotefs       $REPODIR/bash/remotefs.sh
 }
 
 SUCCESS_COUNTER=0
