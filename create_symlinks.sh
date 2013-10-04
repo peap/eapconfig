@@ -12,6 +12,7 @@ create_symlinks () {
     safe_mkdir $HOME/remotefs/
 
     # dotfiles
+    link_to_git_repo $HOME/.ackrc    $REPODIR/dotfiles/ackrc
     link_to_git_repo $HOME/.bashrc   $REPODIR/dotfiles/bashrc
     link_to_git_repo $HOME/.screenrc $REPODIR/dotfiles/screenrc
     link_to_git_repo $HOME/.vimrc    $REPODIR/dotfiles/vimrc
