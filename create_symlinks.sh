@@ -25,6 +25,6 @@ create_symlinks () {
 }
 
 SUCCESS_COUNTER=0
-echo "Creating links for git-versioned files for $USER on $HN"
+echo "Creating symlinks to $(basename `pwd`) files for $USER on $HN..."
 create_symlinks
 echo "  OK: $SUCCESS_COUNTER files"
