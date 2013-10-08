@@ -25,6 +25,6 @@ create_symlinks () {
 }
 
 SUCCESS_COUNTER=0
-echo "Creating symlinks to $(basename `pwd`) files for $USER on $HN..."
+echo "Creating symlinks to $(basename $REPODIR) files for $USER on $HN..."
 create_symlinks
 echo "  OK: $SUCCESS_COUNTER files"
