@@ -46,6 +46,9 @@ map <F6> :! pdflatex -shell-escape %<CR>
 map <F7> :! evince $(echo % \| sed s/\.tex$/\.pdf/g) &<CR>
 
 " Use Natural syntax highlighting for Natural/webAgent objects
+au BufNewFile,BufRead *.less set filetype=css
+
+" Use Natural syntax highlighting for Natural/webAgent objects
 au BufNewFile,BufRead *.ns* set filetype=natural
 au BufNewFile,BufRead *.wb? set filetype=natural
 
