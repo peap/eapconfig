@@ -7,6 +7,7 @@ syntax on                  " syntax highlighting
 set background=dark        " assume terminal has black background
 set ruler                  " show cursor position
 set number                 " show line numbers
+set tabstop=4              " tabs makes four spaces
 set shiftwidth=4           " tabs makes four spaces
 set expandtab              " tabs are actually spaces
 set iskeyword+=-           " count hyphens as part of a word
