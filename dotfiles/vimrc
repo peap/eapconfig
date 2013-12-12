@@ -19,6 +19,8 @@ set wildmode=longest,list  " ex-command completion acts like bash (PV, p.66)
 set hlsearch               " highlight search matches
 "set shell=/bin/bash\ -i   " allow execution of aliases using :r! <cmd>
 
+colorscheme darkblue       " default colorscheme for GVim
+
 " Don't move comments to beginning of the line
 inoremap # X#
 
