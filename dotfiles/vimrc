@@ -65,6 +65,9 @@ au BufNewFile,BufRead *.wb? set filetype=natural
 " Use JavaScript syntax highlighting for JSON
 au BufNewFile,BufRead *.json set filetype=javascript
 
+" Use Ruby syntax highlighting for Puppet
+au BufNewFile,BufRead *.pp set filetype=ruby
+
 " Tell vim to remember certain things when we exit, and restore cursor position
 " to where we were when we reopen a file.
 "  '10  :  marks will be remembered for up to 10 previously edited files
