@@ -1,17 +1,18 @@
 #!/bin/bash
 #
-# Create symlinks in local filesystem for each repository file listed
+# Script to run after pulling in changes to this repo; create directories and
+# symlinks in local filesystem that we expect to manage.
 
 export REPODIR=$(pwd)
-export HN=$(hostname)
 
+# safe_mkdir, link_to_git_repo
 source bash/linking_functions.sh
 
 create_symlinks () {
     safe_mkdir $HOME/bin/
     safe_mkdir $HOME/remotefs/
 
-    # dotfiles
+    # dot files
     link_to_git_repo $HOME/.ackrc    $REPODIR/dotfiles/ackrc
     link_to_git_repo $HOME/.bashrc   $REPODIR/dotfiles/bashrc
     link_to_git_repo $HOME/.screenrc $REPODIR/dotfiles/screenrc
@@ -25,6 +26,6 @@ create_symlinks () {
 }
 
 SUCCESS_COUNTER=0
-echo "Creating symlinks to $(basename $REPODIR) files for $USER on $HN..."
+echo "Creating symlinks to $(basename $REPODIR) files for $USER on $HOSTNAME..."
 create_symlinks
 echo "  OK: $SUCCESS_COUNTER files"
