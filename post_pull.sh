@@ -9,6 +9,8 @@ export REPODIR=$(pwd)
 source bash/linking_functions.sh
 
 create_symlinks () {
+    echo "Creating symlinks to $(basename $REPODIR) files for $USERNAME on $HOSTNAME..."
+
     safe_mkdir $HOME/bin/
     safe_mkdir $HOME/remotefs/
 
@@ -25,9 +27,11 @@ create_symlinks () {
     link_to_git_repo $HOME/bin/remotefs       $REPODIR/bash/remotefs.sh
 }
 
+
 SUCCESS_COUNTER=0
 FAILURE_COUNTER=0
-echo "Creating symlinks to $(basename $REPODIR) files for $USER on $HOSTNAME..."
+
 create_symlinks
+
 echo "  OK: $SUCCESS_COUNTER files"
 echo "FAIL: $FAILURE_COUNTER files"
