@@ -26,6 +26,8 @@ create_symlinks () {
 }
 
 SUCCESS_COUNTER=0
+FAILURE_COUNTER=0
 echo "Creating symlinks to $(basename $REPODIR) files for $USER on $HOSTNAME..."
 create_symlinks
 echo "  OK: $SUCCESS_COUNTER files"
+echo "FAIL: $FAILURE_COUNTER files"
