@@ -6,7 +6,7 @@
 export REPODIR=$(pwd)
 
 # safe_mkdir, link_to_git_repo
-source bash/linking_functions.sh
+source bash/post_pull_functions.sh
 
 create_symlinks () {
     echo "Creating symlinks to $(basename $REPODIR) files for $USERNAME on $HOSTNAME..."
