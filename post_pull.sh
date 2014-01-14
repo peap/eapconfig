@@ -5,7 +5,6 @@
 
 export REPODIR=$(pwd)
 
-# safe_mkdir, link_to_git_repo
 source bash/post_pull_functions.sh
 
 create_symlinks () {
@@ -30,8 +29,10 @@ create_symlinks () {
 
 SUCCESS_COUNTER=0
 FAILURE_COUNTER=0
+IGNORED_COUNTER=0
 
 create_symlinks
 
 echo "  OK: $SUCCESS_COUNTER files"
 echo "FAIL: $FAILURE_COUNTER files"
+echo "IGNR: $IGNORED_COUNTER files"
