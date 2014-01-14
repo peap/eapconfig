@@ -1,18 +1,25 @@
 #!/bin/bash
 #
-# Functions for creating links in the filesystem to files in this repository.
+# Functions for tasks like creating symlinks and setting permissions after
+# pulling in changes to a repo.
 #
 
 _count_success () {
     # Call after a command to increment a success counter
-    if [ $? -eq 0 ] ; then
-        SUCCESS_COUNTER=$((SUCCESS_COUNTER+1))
-    fi
+    SUCCESS_COUNTER=$((SUCCESS_COUNTER+1))
 }
 
 _count_failure () {
     # Call after a command to increment a failure counter
     FAILURE_COUNTER=$((FAILURE_COUNTER+1))
+}
+
+count_result () {
+    if [ "$?" -eq "0" ] ; then
+        _count_success
+    else
+        _count_failure
+    fi
 }
 
 _safe_to_create_link () {
