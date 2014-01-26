@@ -121,6 +121,10 @@ bindsym XF86AudioRaiseVolume exec pactl set-sink-volume 0 -- +5%
 bindsym XF86AudioLowerVolume exec pactl set-sink-volume 0 -- -5%
 bindsym XF86AudioMute        exec pactl set-sink-mute   0 toggle
 
+# adjust screen brightness
+bindsym XF86MonBrightnessUp   exec xbacklight -inc 10
+bindsym XF86MonBrightnessDown exec xbacklight -dec 10
+
 # reload the configuration file
 bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
