@@ -15,12 +15,15 @@ create_symlinks () {
     safe_mkdir $HOME/remotefs/
 
     # dot files
-    link_to_git_repo $HOME/.ackrc     $REPODIR/dotfiles/ackrc
-    link_to_git_repo $HOME/.bashrc    $REPODIR/dotfiles/bashrc
-    link_to_git_repo $HOME/.screenrc  $REPODIR/dotfiles/screenrc
-    link_to_git_repo $HOME/.vimrc     $REPODIR/dotfiles/vimrc
-    link_to_git_repo $HOME/.zshrc     $REPODIR/dotfiles/zshrc
-    link_to_git_repo $HOME/.i3/config $REPODIR/dotfiles/i3-config
+    link_to_git_repo $HOME/.ackrc    $REPODIR/dotfiles/ackrc
+    link_to_git_repo $HOME/.bashrc   $REPODIR/dotfiles/bashrc
+    link_to_git_repo $HOME/.screenrc $REPODIR/dotfiles/screenrc
+    link_to_git_repo $HOME/.vimrc    $REPODIR/dotfiles/vimrc
+    link_to_git_repo $HOME/.zshrc    $REPODIR/dotfiles/zshrc
+
+    # i3
+    link_to_git_repo $HOME/.i3/config     $REPODIR/dotfiles/i3-config
+    link_to_git_repo $HOME/.i3status.conf $REPODIR/dotfiles/i3status.conf
 
     # programs/scripts
     link_to_git_repo $HOME/bin/latex2png      $REPODIR/latex/latex2png.sh
