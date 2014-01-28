@@ -28,7 +28,7 @@ create_symlinks () {
     # programs/scripts
     link_to_git_repo $HOME/bin/latex2png      $REPODIR/latex/latex2png.sh
     link_to_git_repo $HOME/bin/convert_to_mp3 $REPODIR/bash/convert_to_mp3.sh
-    link_to_git_repo $HOME/bin/remotefs       $REPODIR/bash/remotefs.sh
+    link_to_git_repo $HOME/bin/remotefs       $REPODIR/scripts/remotefs.py
 }
 
 
