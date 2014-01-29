@@ -2,6 +2,8 @@
 """
 Maintain a directory at ~/remotefs/ for mounting remote filesystems over SSH.
 """
+from __future__ import print_function
+
 import argparse
 import os
 import pickle
@@ -16,6 +18,7 @@ from eapy.shell import (
 PROGRAM = 'remotefs'
 VERSION = (1, 3, 0)
 
+PY_VERSION = sys.version_info.major
 
 def _get_version():
     return '.'.join(map(str, VERSION))
@@ -127,11 +130,14 @@ class Host(object):
     def mount(self):
         if self.status == self.STATUS_UP:
             return None
-        print('Mounting {0}:{1} at {2}...'.format(
-            self,
-            colorize(self.remote_path, COLOR_CYAN),
-            colorize(self.local_path, COLOR_YELLOW),
-        ), end='', flush=True)
+        sys.stdout.write(
+            'Mounting {0}:{1} at {2}...'.format(
+                self,
+                colorize(self.remote_path, COLOR_CYAN),
+                colorize(self.local_path, COLOR_YELLOW),
+            )
+        )
+        sys.stdout.flush()
         if not os.path.exists(self.local_path):
             os.mkdir(self.local_path)
         return_code = subprocess.call([
@@ -142,17 +148,18 @@ class Host(object):
         ])
         if return_code == 0:
             self.status = self.STATUS_UP
-            print(colorize('ok', COLOR_GREEN))
+            sys.stdout.write(colorize('ok\n', COLOR_GREEN))
         else:
             os.rmdir(self.local_path)
             self.status = self.STATUS_DOWN
-            print(colorize('fail', COLOR_RED))
+            sys.stdout.write(colorize('fail\n', COLOR_RED))
         self.save()
 
     def unmount(self):
         if self.status == self.STATUS_DOWN:
             return None
-        print('Unmounting {0}...'.format(self), end='', flush=True)
+        sys.stdout.write('Unmounting {0}...'.format(self))
+        sys.stdout.flush()
         return_code = subprocess.call([
             'fusermount',
             '-u',
@@ -161,7 +168,7 @@ class Host(object):
         if return_code == 0:
             os.rmdir(self.local_path)
             self.status = self.STATUS_DOWN
-            print(colorize('ok', COLOR_GREEN))
+            sys.stdout.write(colorize('ok\n', COLOR_GREEN))
         self.save()
 
     def forget(self):
@@ -188,6 +195,8 @@ class Host(object):
 
     @classmethod
     def _get_state(cls):
+        if PY_VERSION == 2:
+            FileNotFoundError = IOError
         try:
             hosts = pickle.load(open(cls.PICKLE_FILE, 'rb'))
         except FileNotFoundError as e:
@@ -211,7 +220,7 @@ if __name__ == '__main__':
 
     if ssh_host:
         remote_path = args.remote_path
-        rel_path = args.directory or args.ssh_host
+        rel_path = args.directory
         host = Host(ssh_host, remote_path=remote_path, rel_path=rel_path)
 
         if action == ACTION_FORGET:
