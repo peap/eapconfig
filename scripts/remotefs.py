@@ -14,31 +14,20 @@ from eapy.shell import (
 )
 
 PROGRAM = 'remotefs'
-VERSION = (1, 1, 0)
+VERSION = (1, 2, 0)
+
+
+def _get_version():
+    return '.'.join(map(str, VERSION))
+
 
 REQUIRED_COMMANDS = ('sshfs', 'fusermount')
-CONNECT_TIMEOUT_SECONDS = 5
-
-HOME_DIR = os.path.expanduser('~')
-MOUNT_BASE = os.path.join(HOME_DIR, PROGRAM)
-PICKLE_FILE = os.path.join(MOUNT_BASE, 'remotefs.p')
 
 ACTION_UP = 'up'
 ACTION_DOWN = 'down'
 ACTION_STATUS = 'status'
 ACTION_FORGET = 'forget'
 VALID_ACTIONS = (ACTION_UP, ACTION_DOWN, ACTION_STATUS, ACTION_FORGET)
-
-STATUS_UP = colorize('up', COLOR_GREEN)
-STATUS_DOWN = colorize('down', COLOR_RED)
-STATUS_MSG = {
-    ACTION_UP: STATUS_UP,
-    ACTION_DOWN: STATUS_DOWN,
-}
-
-
-def _get_version():
-    return '.'.join(map(str, VERSION))
 
 
 def _get_args():
@@ -50,6 +39,7 @@ def _get_args():
     )
     parser.add_argument(
         'action',
+        nargs='?',
         choices=VALID_ACTIONS,
         help='bring the host up or down',
     )
@@ -60,7 +50,7 @@ def _get_args():
     )
     parser.add_argument(
         '-d', '--directory',
-        help='directory name to use',
+        help='local directory name to use',
     )
     parser.add_argument(
         '-r', '--remote_path',
@@ -70,101 +60,151 @@ def _get_args():
     return parser.parse_args()
 
 
-def mount_remote_fs(host, remote_path, local_path):
-    if not os.path.exists(MOUNT_BASE):
-        os.mkdir(MOUNT_BASE)
-    if not os.path.exists(local_path):
-        os.mkdir(local_path)
-    subprocess.call([
-        'sshfs',
-        '{0}:{1}'.format(host, remote_path),
-        local_path,
-        '-o',
-        'ConnectTimeout={0}'.format(CONNECT_TIMEOUT_SECONDS),
-    ])
-    return None
+class Host(object):
+    HOME_DIR = os.path.expanduser('~')
+    MOUNT_BASE = os.path.join(HOME_DIR, PROGRAM)
+    PICKLE_FILE = os.path.join(MOUNT_BASE, 'remotefs.p')
+    CONNECT_TIMEOUT_SECONDS = 5
+    STATUS_UP = colorize('up', COLOR_GREEN)
+    STATUS_DOWN = colorize('down', COLOR_RED)
+    STATUS_UNKNOWN = colorize('unknown', COLOR_YELLOW)
+    STATUS_MSG = {
+        ACTION_UP: STATUS_UP,
+        ACTION_DOWN: STATUS_DOWN,
+    }
 
 
-def unmount_remote_fs(local_path):
-    subprocess.call([
-        'fusermount',
-        '-u',
-        local_path,
-    ])
-    os.rmdir(local_path)
-    return None
+    def __init__(self, name, remote_path='/', rel_path=None):
+        if not os.path.exists(self.MOUNT_BASE):
+            os.mkdir(self.MOUNT_BASE)
 
+        hosts = self._get_state()
+        host = hosts.get(name, None)
+        if host is None:
+            if rel_path is None:
+                rel_path = host
+            host = {
+                'name': name,
+                'remote_path': remote_path,
+                'local_path': os.path.join(self.MOUNT_BASE, rel_path),
+                'status': self.STATUS_UNKNOWN,
+            }
 
-def get_hosts():
-    try:
-        hosts = pickle.load(open(PICKLE_FILE, 'rb'))
-    except FileNotFoundError as e:
-        hosts = {}
-    return hosts
+        self.name = host['name']
+        self.remote_path = host['remote_path']
+        self.local_path = host['local_path']
+        self.status = host['status']
 
-
-def save_hosts(hosts):
-    pickle.dump(hosts, open(PICKLE_FILE, 'wb'))
-    return None
-    
-
-def update_host(host, local_path, remote_path, status):
-    hosts = get_hosts()
-    if host in hosts:
-        if hosts[host]['status'] == status:
-            raise SystemError('{0} is already {1}'.format(host, status))
-    hosts.update({
-        host: {
-            'local_path': local_path,
-            'remote_path': remote_path,
-            'status': status,
+    def save(self):
+        hosts = self._get_state()
+        host = {
+            'name': self.name,
+            'remote_path': self.remote_path,
+            'local_path': self.local_path,
+            'status': self.status,
         }
-    })
-    save_hosts(hosts)
+        hosts.update({self.name: host})
+        self._save_state(hosts)
 
+    def mount(self):
+        if self.status == self.STATUS_UP:
+            return None
+        print('Mounting {0}:{1} at {2}...'.format(
+            colorize(self.name, COLOR_GREEN),
+            colorize(self.remote_path, COLOR_CYAN),
+            colorize(self.local_path, COLOR_YELLOW),
+        ), end='')
+        if not os.path.exists(self.local_path):
+            os.mkdir(self.local_path)
+        return_code = subprocess.call([
+            'sshfs',
+            '{0}:{1}'.format(self.name, self.remote_path),
+            self.local_path,
+            '-o', 'ConnectTimeout={0}'.format(self.CONNECT_TIMEOUT_SECONDS),
+        ])
+        if return_code == 0:
+            self.status = self.STATUS_UP
+            print(colorize('ok', COLOR_GREEN))
+        else:
+            os.rmdir(self.local_path)
+            self.status = self.STATUS_DOWN
+            print(colorize('fail', COLOR_RED))
+        self.save()
 
-def forget_host(host):
-    hosts = get_hosts()
-    hosts.pop(host)
-    save_hosts(hosts)
+    def unmount(self):
+        if self.status == self.STATUS_DOWN:
+            return None
+        print('Unmounting {0}...'.format(
+            colorize(self.local_path, COLOR_YELLOW)), end='')
+        return_code = subprocess.call([
+            'fusermount',
+            '-u',
+            self.local_path,
+        ])
+        if return_code == 0:
+            os.rmdir(self.local_path)
+            self.status = self.STATUS_DOWN
+            print(colorize('ok', COLOR_GREEN))
+        self.save()
 
+    def forget(self):
+        hosts = self._get_state()
+        hosts.pop(self.name, None)
+        self._save_state(hosts)
 
-def status_remote_fs():
-    hosts = get_hosts()
-    for host, props in hosts.items():
-        status = STATUS_MSG[props['status']]
-        print('{0}: {1}'.format(host, status))
+    def print_status_line(self):
+        print('{0}: {1}'.format(self.name, self.status))
 
+    @classmethod
+    def all(cls):
+        host_list = []
+        hosts = cls._get_state()
+        for host in hosts.keys():
+            host_list.append(cls(host))
+        return host_list
+
+    @classmethod
+    def _get_state(cls):
+        try:
+            hosts = pickle.load(open(cls.PICKLE_FILE, 'rb'))
+        except FileNotFoundError as e:
+            hosts = {}
+        return hosts
+
+    @classmethod
+    def _save_state(cls, hosts):
+        pickle.dump(hosts, open(cls.PICKLE_FILE, 'wb'))
+        
 
 if __name__ == '__main__':
     ensure_commands_exist(REQUIRED_COMMANDS)
+
     args = _get_args()
+    action = args.action or ACTION_STATUS
+    ssh_host = args.ssh_host or None
 
-    if args.action == ACTION_STATUS:
-        status_remote_fs()
-        sys.exit(0)
+    if ssh_host:
+        remote_path = args.remote_path
+        rel_path = args.directory or args.ssh_host
+        host = Host(ssh_host, remote_path=remote_path, rel_path=rel_path)
 
-    if args.action == ACTION_FORGET:
-        forget_host(args.ssh_host)
-        sys.exit(0)
-
-    mount_dir = args.directory or args.ssh_host
-    local_path = os.path.join(MOUNT_BASE, mount_dir)
-    try:
-        update_host(args.ssh_host, local_path, args.remote_path, args.action)
-    except SystemError as e:
-        print(e)
-        sys.exit(1)
-
-    if args.action == ACTION_UP:
-        print('Mounting {0}:{1} at {2}...'.format(
-            colorize(args.ssh_host, COLOR_GREEN),
-            colorize(args.remote_path, COLOR_CYAN),
-            colorize(local_path, COLOR_YELLOW),
-        ))
-        mount_remote_fs(args.ssh_host, args.remote_path, local_path)
-    if args.action == ACTION_DOWN:
-        print('Unmounting {0}...'.format(colorize(local_path, COLOR_YELLOW)))
-        unmount_remote_fs(local_path)
+        if action == ACTION_FORGET:
+            host.forget()
+        elif action == ACTION_STATUS:
+            host.print_status_line()
+        elif action == ACTION_UP:
+            host.mount()
+        elif action == ACTION_DOWN:
+            host.unmount()
+    else:
+        if action == ACTION_STATUS:
+            for host in Host.all():
+                host.print_status_line()
+        elif action == ACTION_DOWN:
+            for host in Host.all():
+                host.unmount()
+        else:
+            print(colorize('You must specify a host.', COLOR_RED))
+            sys.exit(5)
 
     sys.exit(0)
