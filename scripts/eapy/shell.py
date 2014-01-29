@@ -2,6 +2,7 @@
 """
 Utilities for system scripts
 """
+import os
 import subprocess
 import sys
 
@@ -47,17 +48,20 @@ def command_available(command, print_error=True):
     """
     See if a command exists by trying to call it with --help.
     """
+    devnull = open(os.devnull, 'w')
     try:
         subprocess.call(
             [command, '--help'],
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL,
+            stdout=devnull,
+            stderr=devnull,
         )
         return True
     except OSError as e:
         if print_error:
             print('You must install {0}.'.format(command))
         return False
+    finally:
+        devnull.close()
 
 
 class PPTable(object):
@@ -72,7 +76,10 @@ class PPTable(object):
         self.data.append(data)
 
     def _col_width(self, col_index):
-        max_data_width = max([len(uncolorize(d[col_index])) for d in self.data])
+        if self.data:
+            max_data_width = max([len(uncolorize(d[col_index])) for d in self.data])
+        else:
+            max_data_width = 0
         return max(len(self.cols[col_index]), max_data_width)
 
     @property
