@@ -71,7 +71,7 @@ class Host(object):
     HOME_DIR = os.path.expanduser('~')
     MOUNT_BASE = os.path.join(HOME_DIR, PROGRAM)
     PICKLE_FILE = os.path.join(MOUNT_BASE, 'remotefs.p')
-    CONNECT_TIMEOUT_SECONDS = 5
+    CONNECT_TIMEOUT_SECONDS = 10
     STATUS_UP = colorize('up', COLOR_GREEN)
     STATUS_DOWN = colorize('down', COLOR_RED)
     STATUS_UNKNOWN = colorize('unknown', COLOR_YELLOW)
@@ -106,7 +106,7 @@ class Host(object):
             self.local_path = os.path.join(self.MOUNT_BASE, rel_path)
             dirty = True
 
-        if dirty:
+        if dirty and self.status != self.STATUS_UNKNOWN:
             self.save()
             if self.status == self.STATUS_UP:
                 self.unmount()
@@ -156,7 +156,7 @@ class Host(object):
         self.save()
 
     def unmount(self):
-        if self.status == self.STATUS_DOWN:
+        if self.status in (self.STATUS_DOWN, self.STATUS_UNKNOWN):
             return None
         sys.stdout.write('Unmounting {0}...'.format(self))
         sys.stdout.flush()
@@ -172,18 +172,13 @@ class Host(object):
         self.save()
 
     def forget(self):
-        if self.status == self.STATUS_UNKNOWN:
-            print('It\'s already forgotten, good buddy.')
-            return None
-        self.unmount()
+        if self.status == self.STATUS_UP:
+            self.unmount()
         print('Forgetting about {0}...'.format(self), end='')
         hosts = self._get_state()
         hosts.pop(self.name, None)
         self._save_state(hosts)
         print(colorize('ok', COLOR_GREEN))
-
-    def print_status_line(self):
-        print('{0}: {1}'.format(self.name, self.status))
 
     @classmethod
     def all(cls):
