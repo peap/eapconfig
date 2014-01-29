@@ -10,11 +10,11 @@ import sys
 
 from eapy.shell import (
     ensure_commands_exist, PPTable,
-    colorize, COLOR_GREEN, COLOR_RED, COLOR_CYAN, COLOR_YELLOW,
+    colorize, COLOR_GREEN, COLOR_RED, COLOR_CYAN, COLOR_YELLOW, COLOR_BLUE,
 )
 
 PROGRAM = 'remotefs'
-VERSION = (1, 2, 0)
+VERSION = (1, 3, 0)
 
 
 def _get_version():
@@ -59,7 +59,6 @@ def _get_args():
     )
     parser.add_argument(
         '-r', '--remote_path',
-        default='/',
         help='remote path to mount',
     )
     return parser.parse_args()
@@ -74,16 +73,19 @@ class Host(object):
     STATUS_DOWN = colorize('down', COLOR_RED)
     STATUS_UNKNOWN = colorize('unknown', COLOR_YELLOW)
 
-    def __init__(self, name, remote_path='/', rel_path=None):
+    def __init__(self, name, remote_path=None, rel_path=None):
         hosts = self._get_state()
         host = hosts.get(name, None)
         if host is None:
+            if remote_path is None:
+                remote_path = '/'
             if rel_path is None:
-                rel_path = host
+                rel_path = name
+            local_path = os.path.join(self.MOUNT_BASE, rel_path)
             host = {
                 'name': name,
                 'remote_path': remote_path,
-                'local_path': os.path.join(self.MOUNT_BASE, rel_path),
+                'local_path': local_path,
                 'status': self.STATUS_UNKNOWN,
             }
 
@@ -91,6 +93,25 @@ class Host(object):
         self.remote_path = host['remote_path']
         self.local_path = host['local_path']
         self.status = host['status']
+
+        dirty = False
+        if remote_path is not None and remote_path != self.remote_path:
+            self.remote_path = remote_path
+            dirty = True
+        if rel_path is not None and \
+                rel_path != self.local_path.strip(self.MOUNT_BASE):
+            self.local_path = os.path.join(self.MOUNT_BASE, rel_path)
+            dirty = True
+
+        if dirty:
+            self.save()
+            if self.status == self.STATUS_UP:
+                self.unmount()
+                self.mount()
+            dirty = False
+
+    def __str__(self):
+        return colorize(self.name, COLOR_BLUE)
 
     def save(self):
         hosts = self._get_state()
@@ -100,17 +121,17 @@ class Host(object):
             'local_path': self.local_path,
             'status': self.status,
         }
-        hosts.update({self.name: host})
+        hosts[self.name] = host
         self._save_state(hosts)
 
     def mount(self):
         if self.status == self.STATUS_UP:
             return None
         print('Mounting {0}:{1} at {2}...'.format(
-            colorize(self.name, COLOR_GREEN),
+            self,
             colorize(self.remote_path, COLOR_CYAN),
             colorize(self.local_path, COLOR_YELLOW),
-        ), end='')
+        ), end='', flush=True)
         if not os.path.exists(self.local_path):
             os.mkdir(self.local_path)
         return_code = subprocess.call([
@@ -131,8 +152,7 @@ class Host(object):
     def unmount(self):
         if self.status == self.STATUS_DOWN:
             return None
-        print('Unmounting {0}...'.format(
-            colorize(self.local_path, COLOR_YELLOW)), end='')
+        print('Unmounting {0}...'.format(self), end='', flush=True)
         return_code = subprocess.call([
             'fusermount',
             '-u',
@@ -145,9 +165,15 @@ class Host(object):
         self.save()
 
     def forget(self):
+        if self.status == self.STATUS_UNKNOWN:
+            print('It\'s already forgotten, good buddy.')
+            return None
+        self.unmount()
+        print('Forgetting about {0}...'.format(self), end='')
         hosts = self._get_state()
         hosts.pop(self.name, None)
         self._save_state(hosts)
+        print(colorize('ok', COLOR_GREEN))
 
     def print_status_line(self):
         print('{0}: {1}'.format(self.name, self.status))
@@ -192,7 +218,7 @@ if __name__ == '__main__':
             host.forget()
         elif action == ACTION_STATUS:
             table = PPTable(['host', 'status', 'local_path', 'remote_path'])
-            table.add_data([host.name, host.status, host.local_path, host.remote_path])
+            table.add_data([str(host), host.status, host.local_path, host.remote_path])
             print(table)
         elif action == ACTION_UP:
             host.mount()
@@ -202,7 +228,7 @@ if __name__ == '__main__':
         if action == ACTION_STATUS:
             table = PPTable(['host', 'status', 'local_path', 'remote_path'])
             for host in Host.all():
-                table.add_data([host.name, host.status, host.local_path, host.remote_path])
+                table.add_data([str(host), host.status, host.local_path, host.remote_path])
             print(table)
         elif action == ACTION_DOWN:
             for host in Host.all():
