@@ -9,7 +9,7 @@ import subprocess
 import sys
 
 from eapy.shell import (
-    ensure_commands_exist,
+    ensure_commands_exist, PPTable,
     colorize, COLOR_GREEN, COLOR_RED, COLOR_CYAN, COLOR_YELLOW,
 )
 
@@ -191,15 +191,19 @@ if __name__ == '__main__':
         if action == ACTION_FORGET:
             host.forget()
         elif action == ACTION_STATUS:
-            host.print_status_line()
+            table = PPTable(['host', 'status', 'local_path', 'remote_path'])
+            table.add_data([host.name, host.status, host.local_path, host.remote_path])
+            print(table)
         elif action == ACTION_UP:
             host.mount()
         elif action == ACTION_DOWN:
             host.unmount()
     else:
         if action == ACTION_STATUS:
+            table = PPTable(['host', 'status', 'local_path', 'remote_path'])
             for host in Host.all():
-                host.print_status_line()
+                table.add_data([host.name, host.status, host.local_path, host.remote_path])
+            print(table)
         elif action == ACTION_DOWN:
             for host in Host.all():
                 host.unmount()
