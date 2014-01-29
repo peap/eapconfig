@@ -91,7 +91,7 @@ class PPTable(object):
             for i, value in enumerate(row):
                 width = self._col_width(i)
                 if len(value) > width:
-                    width = len(value) + (6 - len(uncolorize(value)))
+                    width = len(value) + (width - len(uncolorize(value)))
                 val = '{0:<{width}}'.format(value, width=width)
                 r.append(val)
             lines.append(' | '.join([''] + r + ['']).strip())
