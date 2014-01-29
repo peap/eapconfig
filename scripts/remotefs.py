@@ -4,55 +4,38 @@ Maintain a directory at ~/remotefs/ for (un)mounting remote filesystems over SSH
 """
 import argparse
 import os
+import pickle
 import subprocess
 import sys
 
+from eapy.shell import (
+    ensure_commands_exist,
+    colorize, COLOR_GREEN, COLOR_RED, COLOR_CYAN, COLOR_YELLOW,
+)
+
 PROGRAM = 'remotefs'
-VERSION = (1, 0, 0)
+VERSION = (1, 1, 0)
 
 REQUIRED_COMMANDS = ('sshfs', 'fusermount')
+CONNECT_TIMEOUT_SECONDS = 5
 
 HOME_DIR = os.path.expanduser('~')
 MOUNT_BASE = os.path.join(HOME_DIR, PROGRAM)
+PICKLE_FILE = os.path.join(MOUNT_BASE, 'remotefs.p')
 
 ACTION_UP = 'up'
 ACTION_DOWN = 'down'
 ACTION_STATUS = 'status'
-VALID_ACTIONS = (ACTION_UP, ACTION_DOWN, ACTION_STATUS)
+ACTION_FORGET = 'forget'
+VALID_ACTIONS = (ACTION_UP, ACTION_DOWN, ACTION_STATUS, ACTION_FORGET)
 
-COLOR_GRAY = '30'
-COLOR_RED = '31'
-COLOR_GREEN = '32'
-COLOR_YELLOW = '33'
-COLOR_BLUE = '34'
-COLOR_MAGENTA = '35'
-COLOR_CYAN = '36'
-COLOR_WHITE = '37'
-COLOR_CRIMSON = '38'
+STATUS_UP = colorize('up', COLOR_GREEN)
+STATUS_DOWN = colorize('down', COLOR_RED)
+STATUS_MSG = {
+    ACTION_UP: STATUS_UP,
+    ACTION_DOWN: STATUS_DOWN,
+}
 
-def ensure_commands_exist(commands, exit_code=1):
-    commands_exist = map(command_available, commands)
-    if not all(commands_exist):
-        sys.exit(exit_code)
-    return None
-
-
-def command_available(command, print_error=True):
-    try:
-        subprocess.call(
-            [command, '--help'],
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL,
-        )
-        return True
-    except OSError as e:
-        if print_error:
-            print('You must install {0}.'.format(command))
-        return False
-
-
-def colorize(msg, color):
-    return '\033[1;{0}m{1}\033[1;m'.format(color, msg)
 
 def _get_version():
     return '.'.join(map(str, VERSION))
@@ -96,6 +79,8 @@ def mount_remote_fs(host, remote_path, local_path):
         'sshfs',
         '{0}:{1}'.format(host, remote_path),
         local_path,
+        '-o',
+        'ConnectTimeout={0}'.format(CONNECT_TIMEOUT_SECONDS),
     ])
     return None
 
@@ -110,10 +95,46 @@ def unmount_remote_fs(local_path):
     return None
 
 
+def get_hosts():
+    try:
+        hosts = pickle.load(open(PICKLE_FILE, 'rb'))
+    except FileNotFoundError as e:
+        hosts = {}
+    return hosts
+
+
+def save_hosts(hosts):
+    pickle.dump(hosts, open(PICKLE_FILE, 'wb'))
+    return None
+    
+
+def update_host(host, local_path, remote_path, status):
+    hosts = get_hosts()
+    if host in hosts:
+        if hosts[host]['status'] == status:
+            raise SystemError('{0} is already {1}'.format(host, status))
+    hosts.update({
+        host: {
+            'local_path': local_path,
+            'remote_path': remote_path,
+            'status': status,
+        }
+    })
+    save_hosts(hosts)
+
+
+def forget_host(host):
+    hosts = get_hosts()
+    hosts.pop(host)
+    save_hosts(hosts)
+
+
 def status_remote_fs():
-    for item in os.listdir(MOUNT_BASE):
-        status = colorize('up', COLOR_GREEN)
-        print('{0}: {1}'.format(item, status))
+    hosts = get_hosts()
+    for host, props in hosts.items():
+        status = STATUS_MSG[props['status']]
+        print('{0}: {1}'.format(host, status))
+
 
 if __name__ == '__main__':
     ensure_commands_exist(REQUIRED_COMMANDS)
@@ -121,10 +142,19 @@ if __name__ == '__main__':
 
     if args.action == ACTION_STATUS:
         status_remote_fs()
+        sys.exit(0)
 
-    if args.action in (ACTION_UP, ACTION_DOWN):
-        mount_dir = args.directory or args.ssh_host
-        local_path = os.path.join(MOUNT_BASE, mount_dir)
+    if args.action == ACTION_FORGET:
+        forget_host(args.ssh_host)
+        sys.exit(0)
+
+    mount_dir = args.directory or args.ssh_host
+    local_path = os.path.join(MOUNT_BASE, mount_dir)
+    try:
+        update_host(args.ssh_host, local_path, args.remote_path, args.action)
+    except SystemError as e:
+        print(e)
+        sys.exit(1)
 
     if args.action == ACTION_UP:
         print('Mounting {0}:{1} at {2}...'.format(
