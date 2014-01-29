@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-Maintain a directory at ~/remotefs/ for (un)mounting remote filesystems over SSH.
+Maintain a directory at ~/remotefs/ for mounting remote filesystems over SSH.
 """
 import argparse
 import os
@@ -40,8 +40,13 @@ def _get_args():
     parser.add_argument(
         'action',
         nargs='?',
+        default=ACTION_STATUS,
         choices=VALID_ACTIONS,
-        help='bring the host up or down',
+        help=(
+            'Mount (up), unmount (down), display the status of, or forget the '
+            'named ssh_host. An ssh_host is required for the up and forget '
+            'commands, whereas down and status will operate on all known hosts.'
+        ),
     )
     parser.add_argument(
         'ssh_host',
@@ -68,16 +73,8 @@ class Host(object):
     STATUS_UP = colorize('up', COLOR_GREEN)
     STATUS_DOWN = colorize('down', COLOR_RED)
     STATUS_UNKNOWN = colorize('unknown', COLOR_YELLOW)
-    STATUS_MSG = {
-        ACTION_UP: STATUS_UP,
-        ACTION_DOWN: STATUS_DOWN,
-    }
-
 
     def __init__(self, name, remote_path='/', rel_path=None):
-        if not os.path.exists(self.MOUNT_BASE):
-            os.mkdir(self.MOUNT_BASE)
-
         hosts = self._get_state()
         host = hosts.get(name, None)
         if host is None:
@@ -179,8 +176,11 @@ class Host(object):
 if __name__ == '__main__':
     ensure_commands_exist(REQUIRED_COMMANDS)
 
+    if not os.path.exists(Host.MOUNT_BASE):
+        os.mkdir(Host.MOUNT_BASE)
+
     args = _get_args()
-    action = args.action or ACTION_STATUS
+    action = args.action
     ssh_host = args.ssh_host or None
 
     if ssh_host:
