@@ -12,6 +12,7 @@ create_symlinks () {
 
     safe_mkdir $HOME/.i3/
     safe_mkdir $HOME/bin/
+    safe_mkdir $HOME/bin/py3status/
     safe_mkdir $HOME/remotefs/
 
     # dot files
