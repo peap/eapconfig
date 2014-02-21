@@ -1,3 +1,10 @@
 #!/bin/bash
 
-
+gvimit () {
+    # open files with gvim
+    if [ "$OSTYPE" = "msys" ] ; then
+        cmd.exe /c "gvim $1"
+    else
+        gvim $1
+    fi
+}
