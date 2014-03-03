@@ -1,2 +1,3 @@
 --ignore-dir=extra
 --ignore-dir=ace
+--follow
