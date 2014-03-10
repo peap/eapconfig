@@ -1,0 +1,9 @@
+set editing-mode vi
+set mark-symlinked-directories On
+set show-mode-in-prompt On
+
+set keymap vi-command
+    Control-l: clear-screen
+
+set keymap vi-insert
+    Control-l: clear-screen
