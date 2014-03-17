@@ -166,9 +166,11 @@ class Host(object):
             self.local_path,
         ])
         if return_code == 0:
-            os.rmdir(self.local_path)
-            self.status = self.STATUS_DOWN
-            sys.stdout.write(colorize('ok\n', COLOR_GREEN))
+            # This typically fails only if the connection is down anyway
+            pass
+        os.rmdir(self.local_path)
+        self.status = self.STATUS_DOWN
+        sys.stdout.write(colorize('ok\n', COLOR_GREEN))
         self.save()
 
     def forget(self):
