@@ -50,6 +50,9 @@ map <F5> :setlocal spell! spelllang=en_us<CR>
 map <F6> :! pdflatex -shell-escape %<CR>
 map <F7> :! evince $(echo % \| sed s/\.tex$/\.pdf/g) &<CR>
 
+" Re-sync syntax highlighting
+map <F8> :syntax sync fromstart<CR>
+
 " Use Natural syntax highlighting for Natural/webAgent objects
 au BufNewFile,BufRead *.less set filetype=css
 
