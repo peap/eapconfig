@@ -55,18 +55,19 @@ def command_available(command, print_error=True):
             stdout=devnull,
             stderr=devnull,
         )
-        return True
     except OSError as e:
         if print_error:
             print('You must install {0}.'.format(command))
-        return False
-    finally:
         devnull.close()
+        return False
+    else:
+        devnull.close()
+        return True
 
 
 class PPTable(object):
     """
-    Pretty-print a table.
+    A table to be pretty-printed to the command line.
     """
     def __init__(self, cols, data=None):
         self.cols = cols
