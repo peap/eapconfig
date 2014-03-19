@@ -34,13 +34,17 @@ create_symlinks () {
     link_to_git_repo $HOME/bin/eapy           $REPODIR/scripts/eapy/
 }
 
-
-SUCCESS_COUNTER=0
-FAILURE_COUNTER=0
-IGNORED_COUNTER=0
+if [ ! $SUCCESS_COUNTER ] ; then
+    SUCCESS_COUNTER=0
+    FAILURE_COUNTER=0
+    IGNORED_COUNTER=0
+    local_counters_only="yep"
+fi
 
 create_symlinks
 
-echo "  OK: $SUCCESS_COUNTER files"
-echo "FAIL: $FAILURE_COUNTER files"
-echo "IGNR: $IGNORED_COUNTER files"
+if [ $local_counters_only ] ; then
+    echo "  OK: $SUCCESS_COUNTER files"
+    echo "FAIL: $FAILURE_COUNTER files"
+    echo "IGNR: $IGNORED_COUNTER files"
+fi
