@@ -25,7 +25,6 @@ create_symlinks () {
 
     # i3
     link_to_git_repo $HOME/.i3/config     $REPODIR/dotfiles/i3-config
-    link_to_git_repo $HOME/.i3status.conf $REPODIR/dotfiles/i3status.conf
     link_to_git_repo $HOME/bin/i3-suspend $REPODIR/scripts/i3-suspend.sh
 
     # programs/scripts
