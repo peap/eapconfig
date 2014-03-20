@@ -8,7 +8,8 @@ export REPODIR=$(pwd)
 source bash/post_pull_functions.sh
 
 create_symlinks () {
-    echo "Creating symlinks to $(basename $REPODIR) files for $USERNAME on $HOSTNAME..."
+    echo -n "Creating symlinks to $(basename $REPODIR) files "
+    echo "for $(whoami) on $(hostname)..."
 
     safe_mkdir $HOME/.i3/
     safe_mkdir $HOME/bin/
