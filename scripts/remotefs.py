@@ -18,8 +18,6 @@ from eapy.shell import (
 PROGRAM = 'remotefs'
 VERSION = (1, 3, 0)
 
-PY_VERSION = sys.version_info.major
-
 def _get_version():
     return '.'.join(map(str, VERSION))
 
@@ -192,7 +190,9 @@ class Host(object):
 
     @classmethod
     def _get_state(cls):
-        if PY_VERSION == 2:
+        if hasattr(__builtins__, 'FileNotFoundError'):
+            FileNotFoundError = __builtins__.FileNotFoundError
+        else:
             FileNotFoundError = IOError
         try:
             hosts = pickle.load(open(cls.PICKLE_FILE, 'rb'))
