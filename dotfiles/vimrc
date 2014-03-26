@@ -26,12 +26,6 @@ endif
 " Don't move comments to beginning of the line
 inoremap # X#
 
-" Map jj/jk/kj to escape from insert mode
-inoremap jj <Esc>
-inoremap kk <Esc>
-inoremap jk <Esc>
-inoremap kj <Esc>
-
 " Center the current line with <space>
 nmap <space> zz
 
