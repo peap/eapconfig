@@ -12,7 +12,7 @@ set shiftwidth=4           " tabs makes four spaces
 set expandtab              " tabs are actually spaces
 set iskeyword+=-           " count hyphens as part of a word
 set smartindent            " smart auto-indent
-set spell                  " spell-check
+"set spell                  " spell-check
 set spelllang=en_us        " spell-check in US English
 syntax spell toplevel      " check spelling on toplevel things
 set wildmode=longest,list  " ex-command completion acts like bash (PV, p.66)
