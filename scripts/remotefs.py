@@ -99,8 +99,8 @@ class Host(object):
         if remote_path is not None and remote_path != self.remote_path:
             self.remote_path = remote_path
             dirty = True
-        if rel_path is not None and \
-                rel_path != self.local_path.strip(self.MOUNT_BASE):
+        if ((rel_path is not None) and
+                (rel_path != self.local_path.strip(self.MOUNT_BASE))):
             self.local_path = os.path.join(self.MOUNT_BASE, rel_path)
             dirty = True
 
@@ -224,7 +224,7 @@ if __name__ == '__main__':
             host.forget()
         elif action == ACTION_STATUS:
             table = PPTable(['host', 'status', 'local_path', 'remote_path'])
-            table.add_data([str(host), host.status, host.local_path, host.remote_path])
+            table.add_row([str(host), host.status, host.local_path, host.remote_path])
             print(table)
         elif action == ACTION_UP:
             host.mount()
@@ -234,7 +234,7 @@ if __name__ == '__main__':
         if action == ACTION_STATUS:
             table = PPTable(['host', 'status', 'local_path', 'remote_path'])
             for host in Host.all():
-                table.add_data([str(host), host.status, host.local_path, host.remote_path])
+                table.add_row([str(host), host.status, host.local_path, host.remote_path])
             print(table)
         elif action == ACTION_DOWN:
             for host in Host.all():
