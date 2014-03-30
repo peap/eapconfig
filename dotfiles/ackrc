@@ -1,3 +1,4 @@
---ignore-dir=extra
 --ignore-dir=ace
+--ignore-dir=extra
+--ignore-dir=venv
 --follow
