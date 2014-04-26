@@ -5,19 +5,21 @@
 syntax on                  " syntax highlighting
 
 set background=dark        " assume terminal has black background
-set ruler                  " show cursor position
-set number                 " show line numbers
-set tabstop=4              " tabs makes four spaces
-set shiftwidth=4           " tabs makes four spaces
 set expandtab              " tabs are actually spaces
+set hlsearch               " highlight search matches
 set iskeyword+=-           " count hyphens as part of a word
+set number                 " show line numbers
+set ruler                  " show cursor position
+"set shell=/bin/bash\ -i   " allow execution of aliases using :r! <cmd>
+set shiftwidth=4           " tabs makes four spaces
+set showcmd                " show current command
 set smartindent            " smart auto-indent
 "set spell                  " spell-check
 set spelllang=en_us        " spell-check in US English
-syntax spell toplevel      " check spelling on toplevel things
+set tabstop=4              " tabs makes four spaces
 set wildmode=longest,list  " ex-command completion acts like bash (PV, p.66)
-set hlsearch               " highlight search matches
-"set shell=/bin/bash\ -i   " allow execution of aliases using :r! <cmd>
+
+syntax spell toplevel      " check spelling on toplevel things
 
 if has("gui_running")
   colorscheme darkblue     " default colorscheme for GVim
