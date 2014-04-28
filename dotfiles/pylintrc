@@ -19,7 +19,7 @@ persistent=yes
 
 # List of plugins (as comma separated values of python modules names) to load,
 # usually to register additional checkers.
-load-plugins=
+load-plugins=pylint_mccabe
 
 
 [MESSAGES CONTROL]
@@ -285,6 +285,8 @@ min-public-methods=2
 # Maximum number of public methods for a class (see R0904).
 max-public-methods=20
 
+# McCabe plugin
+max-complexity=10
 
 [IMPORTS]
 
