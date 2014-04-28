@@ -20,6 +20,7 @@ create_symlinks () {
     link_to_git_repo $HOME/.ackrc    $REPODIR/dotfiles/ackrc
     link_to_git_repo $HOME/.bashrc   $REPODIR/dotfiles/bashrc
     link_to_git_repo $HOME/.inputrc  $REPODIR/dotfiles/inputrc
+    link_to_git_repo $HOME/.pylintrc $REPODIR/dotfiles/pylintrc
     link_to_git_repo $HOME/.screenrc $REPODIR/dotfiles/screenrc
     link_to_git_repo $HOME/.vimrc    $REPODIR/dotfiles/vimrc
     link_to_git_repo $HOME/.zshrc    $REPODIR/dotfiles/zshrc
