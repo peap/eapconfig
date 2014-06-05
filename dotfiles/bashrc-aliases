@@ -27,4 +27,4 @@ alias pep8="pep8 --repeat"
 
 # other 
 alias :q="echo This isn\'t vim\!"
-
+alias manhtml="man --html"
