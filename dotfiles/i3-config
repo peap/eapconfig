@@ -119,8 +119,6 @@ bindsym $mod+e layout toggle split
 
 # resize container
 mode "resize" {
-    # These bindings trigger as soon as you enter the resize mode
-
     bindsym Left  resize shrink width  5 px or 5 ppt
     bindsym Right resize grow   width  5 px or 5 ppt
     bindsym Up    resize shrink height 5 px or 5 ppt
@@ -131,6 +129,19 @@ mode "resize" {
     bindsym Escape mode "default"
 }
 bindsym $mod+r mode "resize"
+
+# move floating container
+mode "movefloat" {
+    bindsym Left move left 10px
+    bindsym Right move right 10px
+    bindsym Up move up 10px
+    bindsym Down move down 10px
+
+    # back to normal
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+m focus floating mode "movefloat"
 
 ########################################
 ### Keybindings: Workspaces
