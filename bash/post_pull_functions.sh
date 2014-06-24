@@ -97,6 +97,17 @@ _safe_to_create_link () {
     return 0
 }
 
+link_to_git_repo_per_host () {
+    LOCALFILE=$1
+    REPOFILE=$2
+
+    REPOFILE_FOR_HOST="${REPOFILE}-${HOSTNAME}"
+  
+    if [ -e $REPOFILE_FOR_HOST ] ; then
+        link_to_git_repo $LOCALFILE $REPOFILE_FOR_HOST
+    fi
+}
+
 link_to_git_repo () {
     # Create a symlink in the local filesystem to a file in this repo
     #

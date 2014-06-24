@@ -26,8 +26,8 @@ create_symlinks () {
     link_to_git_repo $HOME/.zshrc    $REPODIR/dotfiles/zshrc
 
     # i3
-    link_to_git_repo $HOME/.i3/config     $REPODIR/dotfiles/i3-config
-    link_to_git_repo $HOME/bin/i3-suspend $REPODIR/scripts/i3-suspend.sh
+    link_to_git_repo_per_host $HOME/.i3/config     $REPODIR/dotfiles/i3-config
+    link_to_git_repo          $HOME/bin/i3-suspend $REPODIR/scripts/i3-suspend.sh
 
     # programs/scripts
     link_to_git_repo $HOME/bin/latex2png      $REPODIR/latex/latex2png.sh
