@@ -11,6 +11,7 @@ call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 
 Plugin 'editorconfig/editorconfig-vim.git'
+Plugin 'nvie/vim-flake8.git'
 
 call vundle#end()
 filetype plugin indent on
@@ -55,11 +56,11 @@ map <F4> :setlocal number!<CR>
 " Toggle spell-check with F5
 map <F5> :setlocal spell! spelllang=en_us<CR>
 
-" These mappings were added to mimic the behavior of TeXMakerX
-" --> F6: typeset the file in the buffer
-" --> F7: open the resultant PDF
-map <F6> :! pdflatex -shell-escape %<CR>
-map <F7> :! evince $(echo % \| sed s/\.tex$/\.pdf/g) &<CR>
+"" These mappings were added to mimic the behavior of TeXMakerX
+"" --> F6: typeset the file in the buffer
+"" --> F7: open the resultant PDF
+"map <F6> :! pdflatex -shell-escape %<CR>
+"map <F7> :! evince $(echo % \| sed s/\.tex$/\.pdf/g) &<CR>
 
 " Re-sync syntax highlighting
 map <F8> :syntax sync fromstart<CR>
