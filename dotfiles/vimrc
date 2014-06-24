@@ -2,6 +2,20 @@
 "   PV = Practical Vim, by Drew Neil
 " WIKI = vim.wikia.com
 
+" ----- Vundle -----
+set nocompatible
+filetype off
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+Plugin 'gmarik/Vundle.vim'
+
+Plugin 'editorconfig/editorconfig-vim.git'
+
+call vundle#end()
+filetype plugin indent on
+" ------------------
+
 syntax on                  " syntax highlighting
 
 set background=dark        " assume terminal has black background
