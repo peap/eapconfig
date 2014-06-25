@@ -18,6 +18,7 @@ from eapy.shell import (
 PROGRAM = 'remotefs'
 VERSION = (1, 3, 0)
 
+
 def _get_version():
     return '.'.join(map(str, VERSION))
 
@@ -46,7 +47,8 @@ def _get_args():
         help=(
             'Mount (up), unmount (down), display the status of, or forget the '
             'named ssh_host. An ssh_host is required for the up and forget '
-            'commands, whereas down and status will operate on all known hosts.'
+            'commands, whereas down and status will operate on all known '
+            'hosts.'
         ),
     )
     parser.add_argument(
@@ -196,14 +198,14 @@ class Host(object):
             FileNotFoundError = IOError
         try:
             hosts = pickle.load(open(cls.PICKLE_FILE, 'rb'))
-        except FileNotFoundError as e:
+        except FileNotFoundError:
             hosts = {}
         return hosts
 
     @classmethod
     def _save_state(cls, hosts):
         pickle.dump(hosts, open(cls.PICKLE_FILE, 'wb'))
-        
+
 
 if __name__ == '__main__':
     ensure_commands_exist(REQUIRED_COMMANDS)
@@ -223,8 +225,12 @@ if __name__ == '__main__':
         if action == ACTION_FORGET:
             host.forget()
         elif action == ACTION_STATUS:
-            table = PPTable(['host', 'status', 'local_path', 'remote_path'])
-            table.add_row([str(host), host.status, host.local_path, host.remote_path])
+            table = PPTable(
+                ['host', 'status', 'local_path', 'remote_path']
+            )
+            table.add_row(
+                [str(host), host.status, host.local_path, host.remote_path]
+            )
             print(table)
         elif action == ACTION_UP:
             host.mount()
@@ -234,7 +240,9 @@ if __name__ == '__main__':
         if action == ACTION_STATUS:
             table = PPTable(['host', 'status', 'local_path', 'remote_path'])
             for host in Host.all():
-                table.add_row([str(host), host.status, host.local_path, host.remote_path])
+                table.add_row(
+                    [str(host), host.status, host.local_path, host.remote_path]
+                )
             print(table)
         elif action == ACTION_DOWN:
             for host in Host.all():
