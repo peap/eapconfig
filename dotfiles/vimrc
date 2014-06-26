@@ -14,7 +14,7 @@ Plugin 'editorconfig/editorconfig-vim.git'
 Plugin 'nvie/vim-flake8.git'
 
 call vundle#end()
-filetype plugin indent on
+filetype plugin on
 " ------------------
 
 syntax on                  " syntax highlighting
