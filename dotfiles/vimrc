@@ -11,6 +11,7 @@ call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 
 Plugin 'editorconfig/editorconfig-vim.git'
+Plugin 'ervandew/supertab'
 Plugin 'nvie/vim-flake8.git'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'tpope/vim-fugitive'
@@ -19,6 +20,8 @@ Plugin 'tpope/vim-surround'
 call vundle#end()
 filetype plugin on
 " ------------------
+
+let g:SuperTabDefaultCompletionType = "<c-n>"
 
 syntax on                  " syntax highlighting
 
