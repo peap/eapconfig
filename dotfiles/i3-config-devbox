@@ -43,6 +43,14 @@ font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
 # font pango:DejaVu Sans Mono 10
 
 ########################################
+### Specific Window Handling
+########################################
+
+# Float JFrames for developing Swing apps with NetBeans, except NetBeans itself. 
+for_window [instance="sun-awt-X11-XFramePeer"] floating enable
+for_window [class="NetBeans IDE 8.0"] floating disable
+
+########################################
 ### Keybinding: i3
 ########################################
 
