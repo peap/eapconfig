@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export EDITOR=vim
-export BROWSER=firefox
-
+export BROWSER='firefox'
+export EDITOR='vim'
+export NODE_ENV='dev'
 export PYTHONDONTWRITEBYTECODE='X'
