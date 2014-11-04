@@ -95,8 +95,8 @@ au BufNewFile,BufRead *.pp set filetype=ruby
 au BufNewFile,BufRead *.ejs set filetype=html
 
 " Keep swap files in /tmp/vim/
-set swapfile
-set dir=~/.vimswp/
+set directory=~/.vimswp/
+set backupdir=~/.vimswp/
 
 " Tell vim to remember certain things when we exit, and restore cursor position
 " to where we were when we reopen a file.
