@@ -11,6 +11,7 @@ create_symlinks () {
     echo -n "Creating symlinks to $(basename $REPODIR) files "
     echo "for $(whoami) on $(hostname)..."
 
+    safe_mkdir $HOME/.vimswp/
     safe_mkdir $HOME/bin/
     safe_mkdir $HOME/bin/py3status/
     safe_mkdir $HOME/remotefs/
