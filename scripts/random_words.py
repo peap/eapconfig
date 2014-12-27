@@ -1,21 +1,37 @@
 #!/usr/bin/env python
-import argparse
 from random import choice
+import sys
 
 WORDS_FILE = '/usr/share/dict/words'
 
 
-def _get_args():
-    parser = argparse.ArgumentParser(description='Get random words.')
-    parser.add_argument(
-        '-n',
-        dest='num_words',
-        metavar='num_words',
-        type=int,
-        default=1,
-        help='number of words to return (default = 1)',
-    )
-    return parser.parse_args()
+if sys.version_info >= (2, 7):
+    def _get_args():
+        from argparse import ArgumentParser
+        parser = ArgumentParser(description='Get random words.')
+        parser.add_argument(
+            '-n',
+            dest='num_words',
+            metavar='num_words',
+            type=int,
+            default=1,
+            help='number of words to return (default = 1)',
+        )
+        return parser.parse_args()
+else:
+    def _get_args():
+        from optparse import OptionParser
+        parser = OptionParser()
+        parser.add_option(
+            '-n',
+            dest='num_words',
+            metavar='num_words',
+            type=int,
+            default=1,
+            help='number of words to return (default = 1)',
+        )
+        (options, args) = parser.parse_args()
+        return options
     
 
 def get_words(num_words):
