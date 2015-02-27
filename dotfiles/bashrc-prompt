@@ -1,6 +1,33 @@
 #!/bin/bash
 
-export PS1='\[\033[32m\]\u\[\033[00m\]@\[\033[33m\]\h\[\033[00m\][\[\033[36m\]\w\[\033[00m\]] '
-#export PS1='\[\033[32m\]\u\[\033[00m\]@\[\033[33m\]\h\[\033[00m\][\[\033[36m\] ¯\_(ツ)_/¯ \[\033[00m\]] '
+ __reset="\[\033[00m\]"
+   __red="\[\033[31m\]"
+ __green="\[\033[32m\]"
+__yellow="\[\033[33m\]"
+  __blue="\[\033[34m\]"
+__purple="\[\033[35m\]"
+  __cyan="\[\033[36m\]"
+ __white="\[\033[37m\]"
 
+__get_prompt () {
+    local _status_code="$1"
+    if [ "$_status_code" == "0" ] ; then
+        local _status_color="$__white"
+    else
+        local _status_color="$__red"
+    fi
+    local _user="${__green}\u${__reset}"
+    local _host="${__yellow}\h${__reset}"
+    local _status="${_status_color}${_status_code}${__reset}"
+    local _wd="${__cyan}\w${__reset}"
+    echo "${_user}@${_host}<${_status}>[${_wd}] "
+}
+
+__prompt_command () {
+    local _exited="$?"
+    export PS1=$(__get_prompt $_exited)
+}
+
+export PROMPT_COMMAND=__prompt_command
 export PROMPT_DIRTRIM=3
+export PS1=$(__get_prompt)
