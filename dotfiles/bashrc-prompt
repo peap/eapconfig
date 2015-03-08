@@ -16,11 +16,16 @@ __get_prompt () {
     else
         local _status_color="$__red"
     fi
+    if [ ! -z "$VIRTUAL_ENV" ] ; then
+        local _venv="(venv)"
+    else
+        local _venv=""
+    fi
     local _user="${__green}\u${__reset}"
     local _host="${__yellow}\h${__reset}"
     local _status="${_status_color}${_status_code}${__reset}"
     local _wd="${__cyan}\w${__reset}"
-    echo "${_user}@${_host}<${_status}>[${_wd}] "
+    echo "${_venv}${_user}@${_host}<${_status}>[${_wd}] "
 }
 
 __prompt_command () {
