@@ -1,4 +1,6 @@
+--ignore-dir=.thunderbird
 --ignore-dir=ace
+--ignore-dir=crashplan
 --ignore-dir=extra
 --ignore-dir=venv
 --follow
