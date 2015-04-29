@@ -94,7 +94,7 @@ au BufNewFile,BufRead *.pp set filetype=ruby
 " Use HTML formatting for Express
 au BufNewFile,BufRead *.ejs set filetype=html
 
-" Keep swap files in /tmp/vim/
+" temporary and swap files
 set directory=~/.vimswp/
 set backupdir=~/.vimswp/
 
