@@ -47,7 +47,11 @@ chmod_if_changed () {
         _count_ignored && return 0
     fi
 
-    curr_perms=$(stat -c "%a" $file)
+    if [[ $OSTYPE == darwin* ]] ; then
+        curr_perms=$(stat -f "%Lp" $file)
+    else
+        curr_perms=$(stat -c "%a" $file)
+    fi
 
     if [ "$new_perms" = "$curr_perms" ] ; then
         _count_success && return 0

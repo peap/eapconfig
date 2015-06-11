@@ -17,13 +17,14 @@ create_symlinks () {
     safe_mkdir $HOME/remotefs/
 
     # dot files
-    link_to_git_repo $HOME/.ackrc    $REPODIR/dotfiles/ackrc
-    link_to_git_repo $HOME/.bashrc   $REPODIR/dotfiles/bashrc
-    link_to_git_repo $HOME/.inputrc  $REPODIR/dotfiles/inputrc
-    link_to_git_repo $HOME/.pylintrc $REPODIR/dotfiles/pylintrc
-    link_to_git_repo $HOME/.screenrc $REPODIR/dotfiles/screenrc
-    link_to_git_repo $HOME/.vimrc    $REPODIR/dotfiles/vimrc
-    link_to_git_repo $HOME/.zshrc    $REPODIR/dotfiles/zshrc
+    link_to_git_repo $HOME/.ackrc        $REPODIR/dotfiles/ackrc
+    link_to_git_repo $HOME/.bashrc       $REPODIR/dotfiles/bashrc
+    link_to_git_repo $HOME/.bash_profile $REPODIR/dotfiles/bash_profile
+    link_to_git_repo $HOME/.inputrc      $REPODIR/dotfiles/inputrc
+    link_to_git_repo $HOME/.pylintrc     $REPODIR/dotfiles/pylintrc
+    link_to_git_repo $HOME/.screenrc     $REPODIR/dotfiles/screenrc
+    link_to_git_repo $HOME/.vimrc        $REPODIR/dotfiles/vimrc
+    link_to_git_repo $HOME/.zshrc        $REPODIR/dotfiles/zshrc
 
     # i3
     link_to_git_repo $HOME/bin/i3-suspend $REPODIR/scripts/i3-suspend.sh

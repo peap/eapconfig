@@ -18,7 +18,11 @@ alias grep="grep --color=always --exclude-dir={.svn,.git}"
 alias less="less -r"  # maintain control characters (for color, essentially)
 
 # ls
-alias ls="ls --color=always"
+if [[ $OSTYPE == darwin* ]] ; then
+    alias ls="ls -G"
+else
+    alias ls="ls --color=always"
+fi
 alias list="ls -alh"
 alias lsit="list"
 
