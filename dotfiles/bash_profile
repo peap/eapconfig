@@ -1,1 +1,8 @@
 [[ -r ~/.bashrc ]] && source ~/.bashrc
+
+if [ $(uname) == "Darwin" ] ; then
+    # add MacPorts paths, if it's installed...
+    if [ -x /opt/local/bin/port ] ; then
+        export PATH="/opt/local/bin:/opt/local/sbin:$PATH"
+    fi
+fi
