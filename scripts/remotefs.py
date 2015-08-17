@@ -16,14 +16,18 @@ from eapy.shell import (
 )
 
 PROGRAM = 'remotefs'
-VERSION = (1, 3, 0)
-
+VERSION = (1, 3, 1)
 
 def _get_version():
     return '.'.join(map(str, VERSION))
 
+WE_ARE_OSX = sys.platform == 'darwin'
 
-REQUIRED_COMMANDS = ('sshfs', 'fusermount')
+if WE_ARE_OSX:
+    REQUIRED_COMMANDS = ('sshfs', 'umount')
+else:
+    # assuming *nix... idk what happens on Windows
+    REQUIRED_COMMANDS = ('sshfs', 'fusermount')
 
 ACTION_UP = 'up'
 ACTION_DOWN = 'down'
@@ -160,11 +164,11 @@ class Host(object):
             return None
         sys.stdout.write('Unmounting {0}...'.format(self))
         sys.stdout.flush()
-        return_code = subprocess.call([
-            'fusermount',
-            '-u',
-            self.local_path,
-        ])
+        if WE_ARE_OSX:
+            unmount_command = ['umount', self.local_path]
+        else:
+            unmount_command = ['fusermount', '-u', self.local_path]
+        return_code = subprocess.call(unmount_command)
         if return_code == 0:
             # This typically fails only if the connection is down anyway
             pass
