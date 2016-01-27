@@ -2,5 +2,6 @@
 --ignore-dir=ace
 --ignore-dir=crashplan
 --ignore-dir=extra
+--ignore-dir=test-reports
 --ignore-dir=venv
 --follow
