@@ -4,6 +4,7 @@
 complete -cf sudo
 complete -cf man
 complete -cf time
+complete -d  cd
 try_to_source /usr/share/git/completion/git-completion.bash
 #try_to_source /etc/bash_completion
 
