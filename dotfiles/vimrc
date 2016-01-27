@@ -16,6 +16,7 @@ Plugin 'nvie/vim-flake8.git'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-surround'
+Plugin 'pbrisbin/vim-syntax-shakespeare'
 
 call vundle#end()
 filetype plugin on
