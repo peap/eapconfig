@@ -1,7 +1,13 @@
+--ignore-file=match:log.*.txt
+
 --ignore-dir=.thunderbird
 --ignore-dir=ace
 --ignore-dir=crashplan
 --ignore-dir=extra
 --ignore-dir=test-reports
 --ignore-dir=venv
+
 --follow
+
+--color
+# --pager=less -r
