@@ -25,7 +25,7 @@ __get_prompt () {
     local _host="${__yellow}\h${__reset}"
     local _status="${_status_color}${_status_code}${__reset}"
     local _wd="${__cyan}\w${__reset}"
-    echo "${_venv}${_user}🏈 ${_host}<${_status}>[${_wd}] "
+    echo "${_venv}${_user}@${_host}<${_status}>[${_wd}] "
 }
 
 __prompt_command () {
