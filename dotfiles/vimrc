@@ -31,6 +31,7 @@ set background=dark        " assume terminal has black background
 set expandtab              " tabs are actually spaces
 set hlsearch               " highlight search matches
 set iskeyword+=-           " count hyphens as part of a word
+set mouse=a                " scroll the window with the mouse
 set number                 " show line numbers
 set ruler                  " show cursor position
 "set shell=/bin/bash\ -i   " allow execution of aliases using :r! <cmd>
