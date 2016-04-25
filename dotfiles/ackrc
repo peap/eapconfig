@@ -1,3 +1,4 @@
+--ignore-file=match:.coverage
 --ignore-file=match:log.*.txt
 
 --ignore-dir=.thunderbird
@@ -5,6 +6,7 @@
 --ignore-dir=coverage-html
 --ignore-dir=crashplan
 --ignore-dir=extra
+--ignore-dir=target
 --ignore-dir=venv
 
 --follow
