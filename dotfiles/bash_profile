@@ -7,6 +7,8 @@ if [ $(uname) == "Darwin" ] ; then
     fi
 fi
 
-source ~/.profile
+if [ -e ~/.profile ] ; then
+    source ~/.profile
+fi
 
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
