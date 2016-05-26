@@ -88,6 +88,9 @@ au BufNewFile,BufRead *.wb? set filetype=natural
 "autocmd BufNewFile,BufRead *.txt set spell
 "autocmd BufNewFile,BufRead README* set spell
 
+" I don't work with modula2; *.md is always markdown
+au BufNewFile,BufRead *.md set filetype=markdown
+
 " Use JavaScript syntax highlighting for JSON
 au BufNewFile,BufRead *.json set filetype=javascript
 
