@@ -9,8 +9,9 @@ HISTCONTROL=ignoredups:ignorespace
 # append to history file, don't overwrite it
 shopt -s histappend
 # save a bunch of history
-HISTSIZE=2000
-HISTFILESIZE=4000
+HISTSIZE=10000
+HISTFILESIZE=100000
+HISTTIMEFORMAT="%a %b %d %T %Z %Y "
 
 # get this script's directory
 # (see http://stackoverflow.com/questions/59895/can-a-bash-script-tell-what-directory-its-stored-in)
