@@ -5,6 +5,9 @@ if [ $(uname) == "Darwin" ] ; then
     if [ -x /opt/local/bin/port ] ; then
         export PATH="/opt/local/bin:/opt/local/sbin:$PATH"
     fi
+    if [ -f /opt/local/etc/profile.d/bash_completion.sh ]; then
+        . /opt/local/etc/profile.d/bash_completion.sh
+    fi
 fi
 
 if [ -e ~/.profile ] ; then
