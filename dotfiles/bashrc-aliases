@@ -29,6 +29,10 @@ alias lsit="list"
 # pep8
 alias pep8="pep8 --repeat"
 
+# docker
+alias docker-rm-exited='docker rm $(docker ps -a -q -f "status=exited")'
+alias docker-rm-untagged='docker rmi $(docker images -q -f "dangling=true")'
+
 # other 
 alias :q="echo This isn\'t vim\!"
 alias manhtml="man --html"
