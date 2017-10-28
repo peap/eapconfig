@@ -23,4 +23,3 @@ _ssh_hosts () {
 
 complete -o nospace            -F _ssh_hosts ssh sftp
 complete -o nospace -o default -F _ssh_hosts scp
-
