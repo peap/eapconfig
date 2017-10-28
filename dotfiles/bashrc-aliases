@@ -40,3 +40,5 @@ alias docker-ip="docker inspect --format '{{ .NetworkSettings.IPAddress }}'"
 # other 
 alias :q="echo This isn\'t vim\!"
 alias manhtml="man --html"
+
+# vim: ft=sh

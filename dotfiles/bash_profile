@@ -10,3 +10,5 @@ source_if_exists () {
 # See: https://superuser.com/a/789465
 source_if_exists "$HOME/.profile"
 source_if_exists "$HOME/.bashrc"
+
+# vim: ft=sh

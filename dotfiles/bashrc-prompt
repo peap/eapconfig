@@ -38,3 +38,5 @@ __prompt_command () {
 export PROMPT_COMMAND=__prompt_command
 export PROMPT_DIRTRIM=3
 export PS1=$(__get_prompt)
+
+# vim: ft=sh

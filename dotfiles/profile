@@ -10,3 +10,5 @@ source_if_exists () {
 
 source_if_exists "${_configdir}/envvar"
 source_if_exists "${_configdir}/paths"
+
+# vim: ft=sh

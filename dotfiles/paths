@@ -12,3 +12,5 @@ if [ $(uname) == "Darwin" ] ; then
         export PATH="/opt/local/bin:/opt/local/sbin:$PATH"
     fi
 fi
+
+# vim: ft=sh

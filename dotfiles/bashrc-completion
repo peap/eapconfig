@@ -31,3 +31,5 @@ complete -o nospace -o default -F _ssh_hosts scp
 if [ $(uname) == "Darwin" ] ; then
     source_if_exists /opt/local/etc/profile.d/bash_completion.sh
 fi
+
+# vim: ft=sh

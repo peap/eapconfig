@@ -29,3 +29,5 @@ HISTTIMEFORMAT="%a %b %d %T %Z %Y "
 HISTCONTROL=ignoredups:ignorespace
 # Append to history file, don't overwrite it.
 shopt -s histappend
+
+# vim: ft=sh
