@@ -2,6 +2,9 @@
 # Entry point for Bash.
 ###
 
+# Mark when we run this, in case it's *not* the entry point.
+export _HAVERUN_BASH_PROFILE="X"
+
 source_if_exists () {
     [[ -e "$1" ]] && source "$1"
 }

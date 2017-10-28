@@ -2,6 +2,9 @@
 # Bash-specific configuration.
 ###
 
+# Make sure we entered through ~/.bash_profile.
+[[ -n $_HAVERUN_BASH_PROFILE ]] || source ~/.bash_profile
+
 # If not running interactively, don't do anything.
 [[ $- != *i* ]] && return
 
