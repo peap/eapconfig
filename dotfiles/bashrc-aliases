@@ -1,4 +1,6 @@
-#!/bin/bash
+###
+# Aliases for Bash shells.
+###
 
 # cd
 alias         ..="cd ../"
@@ -18,7 +20,7 @@ alias grep="grep --color=always --exclude-dir={.svn,.git}"
 alias less="less -r"  # maintain control characters (for color, essentially)
 
 # ls
-if [[ $OSTYPE == darwin* ]] ; then
+if [ $(uname) == "Darwin" ] ; then
     alias ls="ls -G"
 else
     alias ls="ls --color=always"

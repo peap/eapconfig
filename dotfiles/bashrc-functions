@@ -1,14 +1,17 @@
-#!/bin/bash
+###
+# Functions for Bash.
+###
 
+# Open files with gvim.
 gvimit () {
-    # open files with gvim
     if [ "$OSTYPE" = "msys" ] ; then
         cmd.exe /c "gvim $1"
     else
-        gvim $1
+        gvim "$1"
     fi
 }
 
+# Wrap man command to make manpages look better.
 man () {
     env LESS_TERMCAP_mb=$'\E[01;31m' \
     LESS_TERMCAP_md=$'\E[01;38;5;74m' \

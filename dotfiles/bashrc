@@ -1,49 +1,31 @@
-#!/bin/bash
+###
+# Bash-specific configuration.
+###
 
-# if not running interactively, don't do anything
+# If not running interactively, don't do anything.
 [[ $- != *i* ]] && return
 
-### History
-# don't put duplicate lines or lines prefixed with whitespace in history
-HISTCONTROL=ignoredups:ignorespace
-# append to history file, don't overwrite it
-shopt -s histappend
-# save a bunch of history
+_configdir="$HOME/eapconfig/dotfiles"
+
+source_if_exists () {
+  [[ -e "$1" ]] && source "$1"
+}
+
+# Bash stuff.
+source_if_exists "$_configdir/bashrc-aliases"
+source_if_exists "$_configdir/bashrc-completion"
+source_if_exists "$_configdir/bashrc-functions"
+source_if_exists "$_configdir/bashrc-prompt"
+
+# Hooks for Bash configuration from sources other than this repo.
+source_if_exists ~/.bashrc_local
+source_if_exists ~/.bashrc_private
+
+# Save a bunch of history.
 HISTSIZE=10000
 HISTFILESIZE=100000
 HISTTIMEFORMAT="%a %b %d %T %Z %Y "
-
-# get this script's directory
-# (see http://stackoverflow.com/questions/59895/can-a-bash-script-tell-what-directory-its-stored-in)
-SOURCE="${BASH_SOURCE[0]}"
-while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
-  DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
-  SOURCE="$(readlink "$SOURCE")"
-  # if $SOURCE was a relative symlink, we need to resolve it relative to the
-  # path where the symlink file was located
-  [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
-done
-CONFIGDIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
-if [ "$OSTYPE" = "msys" ] ; then
-  # not creating symlinks on Windows, so ~/.bashrc is actually its own file
-  CONFIGDIR=~/eapconfig/dotfiles/
-fi
-
-try_to_source () {
-  if [ -e $1 ] ; then
-    source $1
-  fi
-}
-
-try_to_source $CONFIGDIR/bashrc-aliases
-try_to_source $CONFIGDIR/bashrc-completion
-try_to_source $CONFIGDIR/bashrc-envvar
-try_to_source $CONFIGDIR/bashrc-functions
-try_to_source $CONFIGDIR/bashrc-paths
-try_to_source $CONFIGDIR/bashrc-prompt
-
-# load a private .bashrc, perhaps maintained by a private repo
-try_to_source ~/.bashrc_private
-
-# load the local, non-versioned .bashrc
-try_to_source ~/.bashrc_local
+# Don't put duplicate lines or lines prefixed with whitespace in history.
+HISTCONTROL=ignoredups:ignorespace
+# Append to history file, don't overwrite it.
+shopt -s histappend

@@ -1,15 +1,17 @@
 #!/bin/bash
-#
+
+###
 # Script to run after pulling in changes to this repo; create directories and
 # symlinks in local filesystem that we expect to manage.
+###
 
-export REPODIR=$(pwd)
+_repo=$(pwd)
 
 source bash/post_pull_functions.sh
 
 create_symlinks () {
-    echo -n "Creating symlinks to $(basename $REPODIR) files "
-    echo "for $(whoami) on $(hostname)..."
+    echo -n "Creating directories and symlinks for $(basename $_repo) "
+    echo "on behalf of $(whoami) on $(hostname)..."
 
     safe_mkdir $HOME/.vimswp/
     safe_mkdir $HOME/bin/
@@ -17,25 +19,26 @@ create_symlinks () {
     safe_mkdir $HOME/remotefs/
 
     # dot files
-    link_to_git_repo $HOME/.ackrc        $REPODIR/dotfiles/ackrc
-    link_to_git_repo $HOME/.bashrc       $REPODIR/dotfiles/bashrc
-    link_to_git_repo $HOME/.bash_profile $REPODIR/dotfiles/bash_profile
-    link_to_git_repo $HOME/.inputrc      $REPODIR/dotfiles/inputrc
-    link_to_git_repo $HOME/.pylintrc     $REPODIR/dotfiles/pylintrc
-    link_to_git_repo $HOME/.screenrc     $REPODIR/dotfiles/screenrc
-    link_to_git_repo $HOME/.vimrc        $REPODIR/dotfiles/vimrc
-    link_to_git_repo $HOME/.Xresources   $REPODIR/dotfiles/Xresources
-    link_to_git_repo $HOME/.zshrc        $REPODIR/dotfiles/zshrc
+    link_to_git_repo $HOME/.ackrc        $_repo/dotfiles/ackrc
+    link_to_git_repo $HOME/.bashrc       $_repo/dotfiles/bashrc
+    link_to_git_repo $HOME/.bash_profile $_repo/dotfiles/bash_profile
+    link_to_git_repo $HOME/.inputrc      $_repo/dotfiles/inputrc
+    link_to_git_repo $HOME/.profile      $_repo/dotfiles/profile
+    link_to_git_repo $HOME/.pylintrc     $_repo/dotfiles/pylintrc
+    link_to_git_repo $HOME/.screenrc     $_repo/dotfiles/screenrc
+    link_to_git_repo $HOME/.vimrc        $_repo/dotfiles/vimrc
+    link_to_git_repo $HOME/.Xresources   $_repo/dotfiles/Xresources
+    link_to_git_repo $HOME/.zshrc        $_repo/dotfiles/zshrc
 
     # i3
-    link_to_git_repo $HOME/bin/i3-suspend $REPODIR/scripts/i3-suspend.sh
+    link_to_git_repo $HOME/bin/i3-suspend $_repo/scripts/i3-suspend.sh
 
     # programs/scripts
-    link_to_git_repo $HOME/bin/latex2png      $REPODIR/latex/latex2png.sh
-    link_to_git_repo $HOME/bin/convert_to_mp3 $REPODIR/bash/convert_to_mp3.sh
-    link_to_git_repo $HOME/bin/remotefs       $REPODIR/scripts/remotefs.py
-    link_to_git_repo $HOME/bin/random_words   $REPODIR/scripts/random_words.py
-    link_to_git_repo $HOME/bin/eapy           $REPODIR/scripts/eapy/
+    link_to_git_repo $HOME/bin/latex2png      $_repo/latex/latex2png.sh
+    link_to_git_repo $HOME/bin/convert_to_mp3 $_repo/bash/convert_to_mp3.sh
+    link_to_git_repo $HOME/bin/remotefs       $_repo/scripts/remotefs.py
+    link_to_git_repo $HOME/bin/random_words   $_repo/scripts/random_words.py
+    link_to_git_repo $HOME/bin/eapy           $_repo/scripts/eapy/
 }
 
 if [ ! $SUCCESS_COUNTER ] ; then

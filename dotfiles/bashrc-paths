@@ -1,8 +1,0 @@
-#!/bin/bash
-
-export PATH="$PATH:~/bin"
-export PATH="$PATH:~/.cabal/bin/"
-export PATH="$PATH:~/.cargo/bin/"
-export PATH="$PATH:~/.rvm/bin/"
-
-export PYTHONPATH="$PYTHONPATH:~/bin"

@@ -1,0 +1,8 @@
+###
+# Environment variables, excluding PATH. Not shell-specific.
+###
+
+export BROWSER="firefox"
+export EDITOR="vim"
+export NODE_ENV="dev"
+export PYTHONDONTWRITEBYTECODE="X"

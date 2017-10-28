@@ -1,14 +1,17 @@
-#!/bin/bash
+###
+# Set up command completion in Bash.
+###
 
-# turn on completion
-complete -cf sudo
+# Turn on some built-in completions.
 complete -cf man
+complete -cf sudo
 complete -cf time
 complete -d  cd
-try_to_source /usr/share/git/completion/git-completion.bash
-#try_to_source /etc/bash_completion
 
-# complete ssh host aliases
+source_if_exists /usr/share/git/completion/git-completion.bash
+#source_if_exists /etc/bash_completion
+
+# Complete ssh host aliases.
 _ssh_hosts () {
   local cur prev opts
   COMPREPLY=()
@@ -23,3 +26,8 @@ _ssh_hosts () {
 
 complete -o nospace            -F _ssh_hosts ssh sftp
 complete -o nospace -o default -F _ssh_hosts scp
+
+# Add MacPorts completions, if necessary.
+if [ $(uname) == "Darwin" ] ; then
+    source_if_exists /opt/local/etc/profile.d/bash_completion.sh
+fi

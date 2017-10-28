@@ -1,21 +1,20 @@
-#!/bin/bash
-#
+###
 # Functions for tasks like creating symlinks and setting permissions after
 # pulling in changes to a repo.
-#
+###
 
 _count_success () {
-    # Call after a command to increment a success counter
+    # Call after a command to increment a success counter.
     SUCCESS_COUNTER=$((SUCCESS_COUNTER+1))
 }
 
 _count_failure () {
-    # Call after a command to increment a failure counter
+    # Call after a command to increment a failure counter.
     FAILURE_COUNTER=$((FAILURE_COUNTER+1))
 }
 
 _count_ignored () {
-    # Call after a command to increment an ignored operations counter
+    # Call after a command to increment an ignored operations counter.
     IGNORED_COUNTER=$((IGNORED_COUNTER+1))
 }
 
@@ -27,15 +26,9 @@ count_result () {
     fi
 }
 
+# Wrapper around mkdir so we can ignore existing directories.
 safe_mkdir () {
-    # Wrapper around mkdir so we can ignore existing directories
-
-    NEWDIR=$1
-    if [ -d $NEWDIR ] ; then
-        return 0
-    else
-        mkdir -p $NEWDIR
-    fi
+    [[ -d $1 ]] && return 0 || mkdir -p $1
 }
 
 chmod_if_changed () {
@@ -167,4 +160,3 @@ link_to_git_repo () {
         fi
     fi
 }
-
