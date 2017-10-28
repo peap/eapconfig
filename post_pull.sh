@@ -35,7 +35,7 @@ create_symlinks () {
 
     # programs/scripts
     link_to_git_repo $HOME/bin/latex2png      $_repo/latex/latex2png.sh
-    link_to_git_repo $HOME/bin/convert_to_mp3 $_repo/bash/convert_to_mp3.sh
+    link_to_git_repo $HOME/bin/convert_to_mp3 $_repo/scripts/convert_to_mp3.sh
     link_to_git_repo $HOME/bin/remotefs       $_repo/scripts/remotefs.py
     link_to_git_repo $HOME/bin/random_words   $_repo/scripts/random_words.py
     link_to_git_repo $HOME/bin/eapy           $_repo/scripts/eapy/
