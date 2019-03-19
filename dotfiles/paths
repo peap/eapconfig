@@ -2,9 +2,9 @@
 # Set up search paths.
 ###
 
-export PATH="~/bin:~/.local/bin:$PATH" # Generic places to put user binaries.
-export PATH="~/.cargo/bin:$PATH"       # For Rust.
-export PYTHONPATH="~/bin:$PYTHONPATH"  # For Python.
+export PATH=~/bin:~/.local/bin:"$PATH" # Generic places to put user binaries.
+export PATH=~/.cargo/bin:"$PATH"       # For Rust.
+export PYTHONPATH=~/bin:"$PYTHONPATH"  # For Python.
 
 # For MacPorts, if applicable.
 if [ $(uname) == "Darwin" ] ; then
