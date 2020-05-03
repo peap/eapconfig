@@ -4,6 +4,7 @@
 
 export PATH=~/bin:~/.local/bin:"$PATH" # Generic places to put user binaries.
 export PATH=~/.cargo/bin:"$PATH"       # For Rust.
+export PATH=~/.poetry/bin:"$PATH"      # For Python Poetry.
 export PYTHONPATH=~/bin:"$PYTHONPATH"  # For Python.
 
 # For MacPorts, if applicable.
