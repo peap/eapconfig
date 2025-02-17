@@ -28,6 +28,7 @@ create_symlinks () {
     link_to_git_repo $HOME/.screenrc     $_repo/dotfiles/screenrc
     link_to_git_repo $HOME/.vimrc        $_repo/dotfiles/vimrc
     link_to_git_repo $HOME/.Xresources   $_repo/dotfiles/Xresources
+    link_to_git_repo $HOME/.xbindkeysrc  $_repo/dotfiles/xbindkeysrc
     link_to_git_repo $HOME/.zshrc        $_repo/dotfiles/zshrc
 
     # i3
