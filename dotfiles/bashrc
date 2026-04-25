@@ -19,6 +19,7 @@ source_if_exists "$_configdir/bashrc-aliases"
 source_if_exists "$_configdir/bashrc-completion"
 source_if_exists "$_configdir/bashrc-functions"
 source_if_exists "$_configdir/bashrc-prompt"
+source_if_exists "$_configdir/profile"
 
 # Hooks for Bash configuration from sources other than this repo.
 source_if_exists ~/.bashrc_local
