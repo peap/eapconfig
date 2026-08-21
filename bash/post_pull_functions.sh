@@ -123,7 +123,7 @@ link_to_git_repo () {
         _count_failure && return 2
     fi
   
-    if [ "$OSTYPE" = "msys" ] ; then
+    if [[ "$OSTYPE" =~ ^(msys|cygwin)$ ]] ; then
         # Until I figure out if I can really use mklink, let's just remove the
         # file/directory and create a new copy. These changes should be confirmed.
         rm -rf $LOCALFILE
